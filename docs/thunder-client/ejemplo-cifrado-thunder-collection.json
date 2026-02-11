@@ -1,0 +1,180 @@
+{
+  "client": "Thunder Client",
+  "collectionName": "Ejemplo Cifrado API",
+  "dateExported": "2026-02-11T14:15:00.000Z",
+  "version": "1.1",
+  "folders": [],
+  "requests": [
+    {
+      "_id": "e4a9e173-6b3c-4ad8-beb6-9c2ef6d0a101",
+      "colId": "d2c3cc7d-8fd6-4fb9-8f6f-e7f7c0dc0b44",
+      "containerId": "",
+      "name": "Health",
+      "url": "{{baseUrl}}/health",
+      "method": "GET",
+      "sortNum": 10000,
+      "created": "2026-02-11T14:15:00.000Z",
+      "modified": "2026-02-11T14:15:00.000Z",
+      "headers": [],
+      "params": [],
+      "tests": []
+    },
+    {
+      "_id": "0ee2ecac-fd6d-490f-9a3f-8d5d4ae41d02",
+      "colId": "d2c3cc7d-8fd6-4fb9-8f6f-e7f7c0dc0b44",
+      "containerId": "",
+      "name": "Auth Register",
+      "url": "{{baseUrl}}/auth/register",
+      "method": "POST",
+      "sortNum": 20000,
+      "created": "2026-02-11T14:15:00.000Z",
+      "modified": "2026-02-11T14:15:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "params": [],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\",\n  \"name\": \"{{name}}\"\n}",
+        "form": []
+      },
+      "tests": []
+    },
+    {
+      "_id": "df47f7f1-2fdd-4d25-b8df-562f8baf1d03",
+      "colId": "d2c3cc7d-8fd6-4fb9-8f6f-e7f7c0dc0b44",
+      "containerId": "",
+      "name": "Auth Login",
+      "url": "{{baseUrl}}/auth/login",
+      "method": "POST",
+      "sortNum": 30000,
+      "created": "2026-02-11T14:15:00.000Z",
+      "modified": "2026-02-11T14:15:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "params": [],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}",
+        "form": []
+      },
+      "tests": []
+    },
+    {
+      "_id": "83f41b34-8e71-4939-a9cb-8a8cd78f4d04",
+      "colId": "d2c3cc7d-8fd6-4fb9-8f6f-e7f7c0dc0b44",
+      "containerId": "",
+      "name": "Auth Me",
+      "url": "{{baseUrl}}/auth/me",
+      "method": "GET",
+      "sortNum": 40000,
+      "created": "2026-02-11T14:15:00.000Z",
+      "modified": "2026-02-11T14:15:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{accessToken}}"
+        }
+      ],
+      "params": [],
+      "tests": []
+    },
+    {
+      "_id": "9c6f172e-6b29-4df5-a454-06d1f54bfb05",
+      "colId": "d2c3cc7d-8fd6-4fb9-8f6f-e7f7c0dc0b44",
+      "containerId": "",
+      "name": "Credentials Create",
+      "url": "{{baseUrl}}/credentials",
+      "method": "POST",
+      "sortNum": 50000,
+      "created": "2026-02-11T14:15:00.000Z",
+      "modified": "2026-02-11T14:15:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{accessToken}}"
+        }
+      ],
+      "params": [],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"label\": \"{{credentialLabel}}\"\n}",
+        "form": []
+      },
+      "tests": []
+    },
+    {
+      "_id": "57e197d6-4aac-421f-adf9-8f0cecc14f06",
+      "colId": "d2c3cc7d-8fd6-4fb9-8f6f-e7f7c0dc0b44",
+      "containerId": "",
+      "name": "Credentials List",
+      "url": "{{baseUrl}}/credentials",
+      "method": "GET",
+      "sortNum": 60000,
+      "created": "2026-02-11T14:15:00.000Z",
+      "modified": "2026-02-11T14:15:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{accessToken}}"
+        }
+      ],
+      "params": [],
+      "tests": []
+    },
+    {
+      "_id": "4c5da0a0-cdb5-46d9-b4dd-a6cb4436ce07",
+      "colId": "d2c3cc7d-8fd6-4fb9-8f6f-e7f7c0dc0b44",
+      "containerId": "",
+      "name": "Credentials Verify",
+      "url": "{{baseUrl}}/credentials/verify",
+      "method": "POST",
+      "sortNum": 70000,
+      "created": "2026-02-11T14:15:00.000Z",
+      "modified": "2026-02-11T14:15:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "params": [],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"apiKey\": \"{{apiKeyPlainOnce}}\"\n}",
+        "form": []
+      },
+      "tests": []
+    },
+    {
+      "_id": "aa4f5738-cdd2-4d20-9e04-5e1a66ac4208",
+      "colId": "d2c3cc7d-8fd6-4fb9-8f6f-e7f7c0dc0b44",
+      "containerId": "",
+      "name": "Auth Logout",
+      "url": "{{baseUrl}}/auth/logout",
+      "method": "POST",
+      "sortNum": 80000,
+      "created": "2026-02-11T14:15:00.000Z",
+      "modified": "2026-02-11T14:15:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{accessToken}}"
+        }
+      ],
+      "params": [],
+      "tests": []
+    }
+  ]
+}

@@ -1,0 +1,231 @@
+\documentclass[a4paper, 12pt]{article}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{float}
+\usepackage{placeins}
+\usepackage{caption}
+\geometry{margin=2.5cm}
+\renewcommand{\floatpagefraction}{.8}
+\renewcommand{\textfraction}{0.05}   
+\renewcommand{\topfraction}{0.8}    
+\renewcommand{\bottomfraction}{0.8}
+\graphicspath{{images/}}
+
+\title{}
+\author{}
+
+\begin{document}
+
+\begin{center}
+\vspace*{\fill}
+{\Huge\textbf{Actividad 3.1: Bcrypt}} \\
+\vspace{1cm}
+{\LARGE Álvaro Del Valle Fernández}
+\vspace*{\fill} 
+\end{center}
+
+\newpage
+
+\tableofcontents
+\clearpage
+
+\section{Introducción}
+En esta práctica debo diferenciar hash, cifrado y encoding. Instalar y usar bcrypt para las contraseñas
+y las api keys y entender como funciona el login con JWT (JSON Web Token).\\
+
+
+\section{Diferencias hash, cifrado y encoding}
+Hash convierte las contraseñas en una cadena alfanumerica usando algoritmos, es irreversible, de esto se encarga Bcrypt.
+Cifrado es la accion que transforma los datos en algo ilegible para protegerlos, pero es reversible.
+Encoding es la accion de convertir datos para que sean legibles por los sistemas, es reversible y no seguro. Por ejemplo convertir una linea de texto a binario.
+
+\section{Aplicar Bcrypt}
+Bcrypt es un algoritmo de hashing de contraseñas, diseñado para proteger credenciales.
+Bcrypt ya esta implementado, por lo que los siguientes pasos se centraran en probar su correcto funcionamiento.
+
+
+\section{Configuración}
+Tras clonar el repositorio uso 
+\begin{lstlisting}[frame=single,breaklines=true]
+npm install
+\end{lstlisting}
+Creo las variables de entorno:
+\begin{lstlisting}[frame=single,breaklines=true]
+PS C:\Users\delva\Desktop\Bcypt Rober\ejemplo-bcrypt> copy .env.example .env
+copy : Cannot find path 'C:\Users\delva\Desktop\Bcypt Rober\ejemplo-bcrypt\.env.example' because it does not exist.
+At line:1 char:1
++ copy .env.example .env
++ ~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Users\delva\...pt\.env.example:String) [Copy-Item], ItemNotFoundException
+    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.CopyItemCommand
+\end{lstlisting}
+La guia indica el archivo equivocado, suponiendo que es envejemplo en vez:
+\begin{lstlisting}[frame=single,breaklines=true]
+copy envjemplo .env 
+\end{lstlisting}
+Dentro del .env veo que necesita PostgreSQL, asi que lo instalo correctamente.\\
+postgres postgres 5432\\
+Postgres se rompe completamente y tengo que desinstalarlo entero y volver a instalarlo.\\
+Creo una base de datos dentro de Postgres llamada postgres tal y como indica el ejercicio:
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{img3.png}
+\end{figure}
+Creacion de base de datos con el mismo
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{img4.png}
+\end{figure}
+Ahora edit el .env con mis datos:
+\begin{lstlisting}[frame=single,breaklines=true]
+# Reemplaza con tu conexion real a PostgreSQL
+DATABASE_URL="postgresql://postgres:1BfagdRsdRa1mEaXpXJF@152.53.189.194:6183/postgres"
+\end{lstlisting}
+Por:
+\begin{lstlisting}[frame=single,breaklines=true]
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/postgres"
+\end{lstlisting}
+Cambio tambien el secret: 
+\begin{lstlisting}[frame=single,breaklines=true]
+JWT_ACCESS_SECRET="postgrespostgres"
+\end{lstlisting}
+Ahora por fin puedo ejercutar el paso 4:
+\begin{lstlisting}[frame=single,breaklines=true]
+npm run prisma:generate
+\end{lstlisting}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{img5.png}
+\end{figure}
+\begin{lstlisting}[frame=single,breaklines=true]
+npm run prisma:deploy
+\end{lstlisting}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{img6.png}
+\end{figure}
+\begin{lstlisting}[frame=single,breaklines=true]
+npm run dev
+\end{lstlisting}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{img7.png}
+\end{figure}
+Da error debido a que la contraseña debe de tener mas de 32 caracteres. La cambio a:
+\begin{lstlisting}[frame=single,breaklines=true]
+JWT_ACCESS_SECRET="postgrespostgres12345678910111213141516171819202122232425"
+\end{lstlisting}
+Ahora ya funciona correctamente:
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{img8.png}
+\end{figure}
+Pruebo que este funcionando Postgres correctamente:
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{img9.png}
+\end{figure}
+Servidor no es capaz de leer el json:
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{img10.png}
+\end{figure}
+Ahora usando thunder client creo una peticion con los datos de ejemplo:
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{img11.png}
+\end{figure}
+Funciona, está configurado correctamente.
+
+
+
+\section{Escenarios de validacion manual}
+\subsection{Registro valido y rechazo por email duplicado}
+Valido:\\
+Registro de usuario: POST /auth/register
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{img11.png}
+\end{figure}
+Invalido:
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{img13.png}
+\end{figure}
+
+\subsection{Login correcto e incorrecto}
+Correcto:
+Login: POST /auth/login
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{img12.png}
+\end{figure}
+Podemos ver el token:
+\begin{lstlisting}[frame=single,breaklines=true]
+"accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxMmh5djkwMDAwd2puazlyZDlqMjUxIiwiZW1haWwiOiJ
+0ZXN0QHRlc3QuY29tIiwiaWF0IjoxNzcxMzAwNTc0 LCJleHAiOjE3NzEzMDE0NzQsImlzcyI6ImVqZ W1wbG8tY2lmcmFkbyJ9.wAVtyih3cejFiT
+WczWCQfsCRAmgvVZc6GruFK4Np0B4",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxMmh5djkwMDAwd 2puazlyZDlqMjUxIiwiZW1haWwiOiJ0ZXN
+  0QHRlc3QuY29tIiwiaWF0IjoxNzcxMzAwN Tc0LCJleHAiOjE3NzEzMDE0NzQsImlzcyI6ImVqZW1wbG8tY2lmcmFkbyJ9.wAVtyih3cejFiTWczWCQfsCRAmgvVZc6GruFK4Np0B4"
+\end{lstlisting}
+Incorrecto:\\
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{img14.png}
+\end{figure}
+
+
+\subsection{Confirmar en DB que no hay passwords ni API keys en claro}
+Tras buscar la estructura adecuada, pude ver el hash, en este caso:
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{img15.png}
+\end{figure}
+Siendo el hash:
+\begin{lstlisting}[frame=single,breaklines=true]
+$2b$12$j1kShkDtzuq8Exs.Inz4uOECGnhz.lQy6TrcRnrT2TAvWAve8FYqi
+\end{lstlisting}
+Para las api keys:
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{img16.png}
+\end{figure}
+Muestra que no hay debido a que no fue creada (siendo el siguiente paso)
+
+\subsection{Crear API key y comprobar que solo se muestra una vez}
+Para ello debemos de ir a headers Content type application/json y Authorization Bearer (accesToken)
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{img17.png}
+\end{figure}
+Con esto obtenemos la API key:
+\begin{lstlisting}[frame=single,breaklines=true]
+"apiKeyPlainOnce": "ak_VYf9A6Qw9WUgsynJH_97wN6DJ4uML1aYL4_l628mO5k",
+\end{lstlisting}
+Probamos a pedirla de nuevo:
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{img18.png}
+\end{figure}
+Mostrando una completamente nueva:
+\begin{lstlisting}[frame=single,breaklines=true]
+"apiKeyPlainOnce": "ak_njcMCuVhS8jEfIgXHlZr3YN7lkH4UA33PXrB8e-EAaw",
+\end{lstlisting}
+\subsection{Verificar API key valida e invalida}
+Valida:
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{img19.png}
+\end{figure}
+Invalida: (quitandole un numero cualquiera)
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{img20.png}
+\end{figure}
+    Con esto ya comprobé todas las funciones pedidas en el ejecicio de git.
+\end{document}
